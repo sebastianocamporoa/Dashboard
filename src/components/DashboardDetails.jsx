@@ -64,9 +64,9 @@ const DashboardDetails = () => {
 	return (
 		<>
 			<div className="d-flex justify-content-between mb-3">
-				<h3>User Management</h3>
+				<h3>Administrador de hobbies</h3>
 				<Button variant="success" onClick={(e) => setIsAddNew(true)}>
-					Add New
+					Agregar hobbie
 				</Button>
 			</div>
 			{isAddNew && (
