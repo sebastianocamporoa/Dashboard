@@ -8,7 +8,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import BlockIcon from '@mui/icons-material/Block';
-import AddUserModal from './AddUserModal.jsx';
+import AddHobbieModal from './AddHobbieModal.jsx';
 import { useRef, useState } from 'react';
 import DatePicker from './DatePicker.jsx';
 import UsersTable from './UsersTable.jsx';
@@ -70,7 +70,7 @@ const DashboardDetails = () => {
 				</Button>
 			</div>
 			{isAddNew && (
-				<AddUserModal
+				<AddHobbieModal
 					show={isAddNew}
 					handleClose={handleClose}
 					setUsers={setUsers}

@@ -88,11 +88,9 @@ const UsersTable = (props) => {
 							<th className="text-center">
 								<Form.Check type="checkbox" varient="success" />
 							</th>
-							<th>User Name</th>
-							<th>Email</th>
-							<th>Group</th>
-							<th>Status</th>
-							<th>Created On</th>
+							<th>Id</th>
+							<th>Hobbie</th>
+							<th>Eliminar hobbie</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -108,8 +106,6 @@ const UsersTable = (props) => {
 									</td>
 									<td>{user.email}</td>
 									<td>{user.group}</td>
-									<td>{user.status}</td>
-									<td>{user.createdOn}</td>
 								</tr>
 							))}
 					</tbody>

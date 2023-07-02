@@ -5,7 +5,7 @@ import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
 import moment from 'moment/moment.js';
 
-const AddUserModal = ({ handleClose, show, setUsers }) => {
+const AddHobbieModal = ({ handleClose, show, setUsers }) => {
 	const formRef = useRef(null);
 	const [errorMessage, setErrorMessage] = useState('');
 
@@ -141,4 +141,4 @@ const AddUserModal = ({ handleClose, show, setUsers }) => {
 	);
 };
 
-export default AddUserModal;
+export default AddHobbieModal;
