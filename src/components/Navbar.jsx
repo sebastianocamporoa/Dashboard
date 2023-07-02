@@ -1,16 +1,21 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import Nav from "react-bootstrap/Nav";
 import { default as BootstrapNavbar } from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import moment from "moment/moment.js";
 import "moment/locale/es";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import { setUserName } from "../redux/actions/userActions";
 
 function Navbar({ isOpen, setIsOpen }) {
+  const navigate = useNavigate();
   const userName = useSelector((state) => state.user.userName);
   const [currentTime, setCurrentTime] = useState(moment().format("LLLL:ss"));
   const [greeting, setGreeting] = useState("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -33,6 +38,15 @@ function Navbar({ isOpen, setIsOpen }) {
     } else {
       return "Buenas noches";
     }
+  };
+
+  const handleLogout = () => {
+    Cookies.remove("token");
+    Cookies.remove("userId");
+
+    dispatch(setUserName(""));
+
+    navigate("/login");
   };
 
   return (
@@ -58,7 +72,9 @@ function Navbar({ isOpen, setIsOpen }) {
           <NavDropdown title={userName} id="Admin-nav-dropdown">
             <NavDropdown.Item>Editar información</NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item>Cerrar sesión</NavDropdown.Item>
+            <NavDropdown.Item onClick={handleLogout}>
+              Cerrar sesión
+            </NavDropdown.Item>
           </NavDropdown>
         </Nav>
       </BootstrapNavbar.Collapse>
