@@ -3,7 +3,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Login from "./pages/Login.jsx";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { user } from "./services/users/users.js";
 import { setUserName } from "./redux/actions/userActions.js";
 
@@ -16,28 +16,27 @@ const App = () => {
     return token && userId;
   };
 
-  const fetchUserName = async () => {
+  const fetchUserName = useCallback(async () => {
     try {
       const response = await user(1);
-      console.log(response);
       if (response?.status === 200) {
         const userName = response?.data?.username;
         dispatch(setUserName(userName));
       } else {
         // Handle error response
-        console.error("Error fetching user name:", response.statusText);
+        console.error("Error al obtener el username");
       }
     } catch (error) {
       // Handle fetch error
-      console.error("Error fetching user name:", error);
+      console.error("Error al obtener el username");
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     if (hasCookies()) {
       fetchUserName();
     }
-  }, []);
+  }, [fetchUserName]);
 
   return (
     <BrowserRouter>

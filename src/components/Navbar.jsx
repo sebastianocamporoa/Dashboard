@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import Nav from "react-bootstrap/Nav";
 import { default as BootstrapNavbar } from "react-bootstrap/Navbar";
