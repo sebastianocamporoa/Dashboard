@@ -2,8 +2,9 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import SearchIcon from "@mui/icons-material/Search";
 import AddHobbieModal from "./AddHobbieModal.jsx";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import UsersTable from "./UsersTable.jsx";
+import { hobbies } from "../services/hobbies/hobbies.js";
 
 const DashboardDetails = () => {
   const [isAddNew, setIsAddNew] = useState(false);
@@ -13,12 +14,29 @@ const DashboardDetails = () => {
     data: [],
   });
 
-  // filters state
   const [filters, setFilters] = useState({});
-  const [checkBoxFilters, setCheckBoxFilter] = useState([]);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
   const formRef = useRef(null);
+
+  const [listHobbies, setListHobbies] = useState([]);
+
+  const getHobbies = async () => {
+    try {
+      const response = await hobbies(1);
+      if (response?.status === 200) {
+        setListHobbies(response?.data);
+      } else {
+        // Handle error response
+        console.error("Error al obtener los hobbies");
+      }
+    } catch (error) {
+      // Handle fetch error
+      console.error("Error al obtener los hobbies");
+    }
+  };
+
+  useEffect(() => {
+    getHobbies();
+  }, []);
 
   const handleClose = () => setIsAddNew(false);
   const handleFilters = (e) => {
@@ -58,7 +76,7 @@ const DashboardDetails = () => {
         >
           <Form.Control
             type="text"
-            placeholder="Search "
+            placeholder="Buscar "
             className="ps-4 w-100 w-md-50"
             aria-label="Search"
             name="search"
@@ -68,14 +86,7 @@ const DashboardDetails = () => {
           <SearchIcon className="position-absolute left-25 d-none d-md-inline" />
         </Form>
 
-        <UsersTable
-          startDate={startDate}
-          endDate={endDate}
-          filters={filters}
-          checkBoxFilters={checkBoxFilters}
-          users={users}
-          setUsers={setUsers}
-        />
+        <UsersTable hobbies={listHobbies} />
       </div>
     </>
   );
