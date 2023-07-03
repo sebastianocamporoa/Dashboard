@@ -9,3 +9,12 @@ export const hobbies = (userId) => {
     },
   });
 };
+
+export const createHobby = (userId, body) => {
+  const token = Cookies.get("token").replace(/^"(.*)"$/, "$1");
+  axiosInstance.post(`api/users/${userId}/hobbies`, body, {
+    headers: {
+      Authorization: token,
+    },
+  });
+};

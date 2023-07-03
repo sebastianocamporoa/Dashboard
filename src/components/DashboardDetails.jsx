@@ -8,11 +8,6 @@ import { hobbies } from "../services/hobbies/hobbies.js";
 
 const DashboardDetails = () => {
   const [isAddNew, setIsAddNew] = useState(false);
-  const [users, setUsers] = useState({
-    loading: false,
-    error: false,
-    data: [],
-  });
 
   const [filters, setFilters] = useState({});
   const formRef = useRef(null);
@@ -58,16 +53,10 @@ const DashboardDetails = () => {
       <div className="d-flex justify-content-between mb-3">
         <h3>Administrador de hobbies</h3>
         <Button variant="success" onClick={(e) => setIsAddNew(true)}>
-          Agregar hobbie
+          Agregar hobby
         </Button>
       </div>
-      {isAddNew && (
-        <AddHobbieModal
-          show={isAddNew}
-          handleClose={handleClose}
-          setUsers={setUsers}
-        />
-      )}
+      {isAddNew && <AddHobbieModal show={isAddNew} handleClose={handleClose} />}
 
       <div className="border">
         <Form
