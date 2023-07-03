@@ -1,36 +1,45 @@
+import { useEffect, useRef, useState } from "react";
+import io from "socket.io-client";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import SearchIcon from "@mui/icons-material/Search";
 import AddHobbieModal from "./AddHobbieModal.jsx";
-import { useEffect, useRef, useState } from "react";
-import UsersTable from "./UsersTable.jsx";
+import HobbiesTable from "./HobbiesTable.jsx";
 import { hobbies } from "../services/hobbies/hobbies.js";
 
 const DashboardDetails = () => {
   const [isAddNew, setIsAddNew] = useState(false);
-
   const [filters, setFilters] = useState({});
   const formRef = useRef(null);
-
   const [listHobbies, setListHobbies] = useState([]);
+  const socketRef = useRef();
 
   const getHobbies = async () => {
     try {
       const response = await hobbies(1);
-      if (response?.status === 200) {
-        setListHobbies(response?.data);
-      } else {
-        // Handle error response
-        console.error("Error al obtener los hobbies");
-      }
+      setListHobbies(response?.data);
     } catch (error) {
-      // Handle fetch error
-      console.error("Error al obtener los hobbies");
+      console.error("Error al obtener los hobbies", error);
     }
   };
 
   useEffect(() => {
     getHobbies();
+    socketRef.current = io("http://localhost:3001", {
+      transports: ["websocket"],
+      withCredentials: true,
+    });
+
+    socketRef.current.on("hobbyAdded", (newHobby) => {
+      console.log(newHobby);
+      setListHobbies((prevHobbies) => [...prevHobbies, newHobby]);
+    });
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
   }, []);
 
   const handleClose = () => setIsAddNew(false);
@@ -75,7 +84,7 @@ const DashboardDetails = () => {
           <SearchIcon className="position-absolute left-25 d-none d-md-inline" />
         </Form>
 
-        <UsersTable hobbies={listHobbies} />
+        <HobbiesTable hobbies={listHobbies} />
       </div>
     </>
   );
