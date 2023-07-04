@@ -14,6 +14,10 @@ const HobbiesTable = (props) => {
     }
   };
 
+  const handleEdit = (hobbie) => {
+    props.onEdit(hobbie);
+  };
+
   return (
     <>
       {isLoading ? (
@@ -39,7 +43,13 @@ const HobbiesTable = (props) => {
                   <span className="ms-2"> {hobbie.hobby}</span>
                 </td>
                 <td>
-                  <img src={edit} width={"16px"} alt={`edit-${idx}`} />
+                  <img
+                    src={edit}
+                    width={"16px"}
+                    alt={`edit-${idx}`}
+                    onClick={() => handleEdit(hobbie)}
+                    style={{ cursor: "pointer" }}
+                  />
                 </td>
                 <td>
                   <img

@@ -14,6 +14,7 @@ const DashboardDetails = () => {
   const formRef = useRef(null);
   const [listHobbies, setListHobbies] = useState([]);
   const socketRef = useRef();
+  const [selectedHobby, setSelectedHobby] = useState(null);
 
   const getHobbies = async () => {
     try {
@@ -42,7 +43,10 @@ const DashboardDetails = () => {
     };
   }, []);
 
-  const handleClose = () => setIsAddNew(false);
+  const handleClose = () => {
+    setSelectedHobby(null);
+    setIsAddNew(false);
+  };
   const handleFilters = (e) => {
     let value = e.target.value;
     setFilters((prev) => ({
@@ -64,6 +68,15 @@ const DashboardDetails = () => {
     });
   };
 
+  const handleEditHobby = (hobby) => {
+    setSelectedHobby(hobby);
+    setIsAddNew(true);
+  };
+
+  const updateHobbies = () => {
+    getHobbies();
+  };
+
   return (
     <>
       <div className="d-flex justify-content-between mb-3">
@@ -72,7 +85,14 @@ const DashboardDetails = () => {
           Agregar hobby
         </Button>
       </div>
-      {isAddNew && <AddHobbieModal show={isAddNew} handleClose={handleClose} />}
+      {isAddNew && (
+        <AddHobbieModal
+          show={isAddNew}
+          handleClose={handleClose}
+          initialValue={selectedHobby ? selectedHobby : ""}
+          onUpdateHobbies={updateHobbies}
+        />
+      )}
 
       <div className="border">
         <Form
@@ -91,7 +111,11 @@ const DashboardDetails = () => {
           <SearchIcon className="position-absolute left-25 d-none d-md-inline" />
         </Form>
 
-        <HobbiesTable hobbies={listHobbies} onDelete={handleDeleteHobby} />
+        <HobbiesTable
+          hobbies={listHobbies}
+          onDelete={handleDeleteHobby}
+          onEdit={handleEditHobby}
+        />
       </div>
     </>
   );

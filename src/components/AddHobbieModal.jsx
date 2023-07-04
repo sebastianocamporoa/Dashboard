@@ -3,10 +3,15 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
 import Modal from "react-bootstrap/Modal";
-import { createHobby } from "../services/hobbies/hobbies";
+import { createHobby, updateHobbies } from "../services/hobbies/hobbies";
 import Cookies from "js-cookie";
 
-const AddHobbieModal = ({ handleClose, show }) => {
+const AddHobbieModal = ({
+  handleClose,
+  show,
+  initialValue,
+  onUpdateHobbies,
+}) => {
   const formRef = useRef(null);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -26,6 +31,22 @@ const AddHobbieModal = ({ handleClose, show }) => {
 
     handleClose();
   };
+
+  const handleEditHobby = async (e) => {
+    e.preventDefault();
+
+    let name = formRef.current.name.value.trim();
+    setErrorMessage("");
+    if (!name) return setErrorMessage("Ingresa el nuevo hobby");
+
+    const body = { hobby: name };
+
+    await updateHobbies(initialValue.id, body);
+
+    handleClose();
+
+    onUpdateHobbies();
+  };
   return (
     <>
       <Modal show={show} onHide={handleClose}>
@@ -34,10 +55,15 @@ const AddHobbieModal = ({ handleClose, show }) => {
           closeVariant="white"
           className="text-bg-primary"
         >
-          <Modal.Title>Agregar nuevo hobby</Modal.Title>
+          <Modal.Title>
+            {initialValue === "" ? "Agregar nuevo hobby" : "Editar hobby"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleAddHobby} ref={formRef}>
+          <Form
+            onSubmit={initialValue === "" ? handleAddHobby : handleEditHobby}
+            ref={formRef}
+          >
             <Form.Group className="mb-3">
               <Form.Label className="fw-bold">Hobby</Form.Label>
               <Form.Control
@@ -45,6 +71,7 @@ const AddHobbieModal = ({ handleClose, show }) => {
                 placeholder="Ingresa el hobby"
                 type="text"
                 name="name"
+                defaultValue={initialValue.hobby}
               />
             </Form.Group>
 
@@ -63,7 +90,10 @@ const AddHobbieModal = ({ handleClose, show }) => {
           <Button variant="danger" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button variant="success" onClick={handleAddHobby}>
+          <Button
+            variant="success"
+            onClick={initialValue === "" ? handleAddHobby : handleEditHobby}
+          >
             Guardar
           </Button>
         </Modal.Footer>

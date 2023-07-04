@@ -28,3 +28,13 @@ export const deleteHobbies = (id) => {
     },
   });
 };
+
+export const updateHobbies = (id, body) => {
+  const token = Cookies.get("token").replace(/^"(.*)"$/, "$1");
+  const userId = Cookies.get("userId");
+  return axiosInstance.put(`api/users/${userId}/hobbies/${id}`, body, {
+    headers: {
+      Authorization: token,
+    },
+  });
+};
