@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { useEffect, useCallback } from "react";
 import { user } from "./services/users/users.js";
 import { setUserName } from "./redux/actions/userActions.js";
+import Register from "./pages/Register.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ const App = () => {
             <Route path="/" element={<Navigate to="/login" replace={true} />} />
           )}
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Route>
       </Routes>
     </BrowserRouter>

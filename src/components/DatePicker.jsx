@@ -1,22 +1,18 @@
-import ReactDatePicker from 'react-datepicker';
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-const DatePicker = ({ setStartDate, setEndDate, startDate, endDate }) => {
-	return (
-		<div>
-			<ReactDatePicker
-				selectsRange={true}
-				startDate={startDate}
-				endDate={endDate}
-				onChange={(update) => {
-					setStartDate(update[0]);
-					setEndDate(update[1]);
-				}}
-				className="p-1 rounded-2 border-1 datePicker"
-				placeholderText="Select Date"
-				withPortal
-			/>
-		</div>
-	);
+const DatePicker = ({ setDate, date, placeholder }) => {
+  return (
+    <div>
+      <ReactDatePicker
+        selected={date}
+        onChange={(update) => setDate(update)}
+        className="p-1 rounded-2 border-1 datePicker"
+        placeholderText={placeholder}
+        withPortal
+      />
+    </div>
+  );
 };
 
 export default DatePicker;
