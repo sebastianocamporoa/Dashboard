@@ -6,6 +6,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddHobbieModal from "./AddHobbieModal.jsx";
 import HobbiesTable from "./HobbiesTable.jsx";
 import { hobbies } from "../services/hobbies/hobbies.js";
+import Cookies from "js-cookie";
 
 const DashboardDetails = () => {
   const [isAddNew, setIsAddNew] = useState(false);
@@ -16,7 +17,7 @@ const DashboardDetails = () => {
 
   const getHobbies = async () => {
     try {
-      const response = await hobbies(1);
+      const response = await hobbies(Cookies.get("userId"));
       setListHobbies(response?.data);
     } catch (error) {
       console.error("Error al obtener los hobbies", error);
@@ -31,7 +32,6 @@ const DashboardDetails = () => {
     });
 
     socketRef.current.on("hobbyAdded", (newHobby) => {
-      console.log(newHobby);
       setListHobbies((prevHobbies) => [...prevHobbies, newHobby]);
     });
 
@@ -55,6 +55,13 @@ const DashboardDetails = () => {
       delete temp[`${e.target.name}`];
       setFilters(temp);
     }
+  };
+
+  const handleDeleteHobby = (id) => {
+    setListHobbies((prevHobbies) => {
+      const updatedHobbies = prevHobbies.filter((hobby) => hobby.id !== id);
+      return updatedHobbies;
+    });
   };
 
   return (
@@ -84,7 +91,7 @@ const DashboardDetails = () => {
           <SearchIcon className="position-absolute left-25 d-none d-md-inline" />
         </Form>
 
-        <HobbiesTable hobbies={listHobbies} />
+        <HobbiesTable hobbies={listHobbies} onDelete={handleDeleteHobby} />
       </div>
     </>
   );

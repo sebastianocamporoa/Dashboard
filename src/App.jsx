@@ -18,7 +18,7 @@ const App = () => {
 
   const fetchUserName = useCallback(async () => {
     try {
-      const response = await user(1);
+      const response = await user(Cookies.get("userId"));
       if (response?.status === 200) {
         const userName = response?.data?.username;
         dispatch(setUserName(userName));

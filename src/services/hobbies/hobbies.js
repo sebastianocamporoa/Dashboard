@@ -18,3 +18,13 @@ export const createHobby = (userId, body) => {
     },
   });
 };
+
+export const deleteHobbies = (id) => {
+  const token = Cookies.get("token").replace(/^"(.*)"$/, "$1");
+  const userId = Cookies.get("userId");
+  return axiosInstance.delete(`api/users/${userId}/hobbies/${id}`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+};
